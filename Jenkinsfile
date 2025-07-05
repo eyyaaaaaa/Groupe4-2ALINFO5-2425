@@ -2,17 +2,11 @@ pipeline {
     agent any
 
     tools {
-        maven 'Maven3'  // Make sure you configured this Maven version in Jenkins global tools
-        jdk 'Java17'    // Adjust to match Jenkins Java config
+        maven 'Maven3'
+        jdk 'Java17'
     }
 
     stages {
-        stage('Checkout') {
-            steps {
-                git 'https://github.com/CharradR/Groupe4-2ALINFO5-2425.git'
-            }
-        }
-
         stage('Build') {
             steps {
                 sh 'mvn clean install'
@@ -34,10 +28,10 @@ pipeline {
 
     post {
         success {
-            echo 'Build succeeded!'
+            echo '✅ Build succeeded!'
         }
         failure {
-            echo 'Build failed.'
+            echo '❌ Build failed.'
         }
     }
 }

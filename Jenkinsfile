@@ -4,11 +4,11 @@ pipeline {
     tools {
         maven 'Maven3'
         jdk 'Java17'
-        sonarScanner 'SonarScanner'  // Name from Global Tool Config
+        // ❌ Do NOT add sonarScanner here
     }
 
     environment {
-        SONARQUBE = 'sonarqube'  // Name from Jenkins Configure System
+        SONARQUBE = 'sonarqube' // Must match the SonarQube server name you added in Jenkins config
     }
 
     stages {
@@ -17,13 +17,15 @@ pipeline {
                 sh 'mvn clean install'
             }
         }
+
         stage('SonarQube Analysis') {
             steps {
-                withSonarQubeEnv(SONARQUBE) {
+                withSonarQubeEnv("${SONARQUBE}") {
                     sh 'mvn sonar:sonar'
                 }
             }
         }
+
         stage('Package') {
             steps {
                 sh 'mvn package'
@@ -36,7 +38,7 @@ pipeline {
             echo '✅ Build and SonarQube analysis succeeded!'
         }
         failure {
-            echo '❌ Build or SonarQube analysis failed.'
+            echo '❌ Build or analysis failed.'
         }
     }
 }

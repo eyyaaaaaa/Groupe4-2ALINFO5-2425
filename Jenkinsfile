@@ -20,7 +20,8 @@ pipeline {
         stage('SonarQube Analysis') {
             steps {
                 withSonarQubeEnv("${SONARQUBE}") {
-                    sh 'mvn sonar:sonar'
+                    sh 'mvn sonar:sonar -Dsonar.projectKey=com.example:Foyer \
+                                        -Dsonar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml'
                 }
             }
         }
@@ -34,7 +35,7 @@ pipeline {
 
     post {
         success {
-            echo '✅ Build and SonarQube analysis succeeded'
+            echo '✅ Build, Test, and SonarQube analysis succeeded'
         }
         failure {
             echo '❌ Build or analysis failed'

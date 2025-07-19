@@ -45,7 +45,7 @@ pipeline {
                 body: """
                     <p>Hi Team,</p>
                     <p>The build #${env.BUILD_NUMBER} for project <b>${env.JOB_NAME}</b> succeeded.</p>
-                    <p>SonarQube report is available at: <a href="${env.BUILD_URL}sonarqube/">SonarQube Dashboard</a></p>
+                    <p>SonarQube report is available at: <a href="http://localhost:9000/dashboard?id=com.example%3AFoyer">SonarQube Dashboard</a></p>
                     <p>Regards,<br/>Jenkins</p>
                 """,
                 mimeType: 'text/html',

@@ -49,7 +49,7 @@ pipeline {
                     <p>Regards,<br/>Jenkins</p>
                 """,
                 mimeType: 'text/html',
-                to: 'yourteam@example.com' // <-- replace with your email(s)
+                to: 'eya.chtourou1@gmail.com' // <-- replace with your email(s)
             )
         }
         failure {

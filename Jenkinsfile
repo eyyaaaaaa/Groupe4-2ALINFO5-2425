@@ -20,8 +20,11 @@ pipeline {
         stage('SonarQube Analysis') {
             steps {
                 withSonarQubeEnv("${SONARQUBE}") {
-                    sh 'mvn sonar:sonar -Dsonar.projectKey=com.example:Foyer \
-                                        -Dsonar.coverage.jacoco.xmlReportPaths=target/jacoco-report/jacoco.xml
+                    // Use triple quotes to avoid problems with multiline string and backslash
+                    sh '''
+                        mvn sonar:sonar -Dsonar.projectKey=com.example:Foyer \
+                        -Dsonar.coverage.jacoco.xmlReportPaths=target/jacoco-report/jacoco.xml
+                    '''
                 }
             }
         }

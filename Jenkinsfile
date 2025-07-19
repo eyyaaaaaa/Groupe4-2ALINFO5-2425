@@ -20,7 +20,6 @@ pipeline {
         stage('SonarQube Analysis') {
             steps {
                 withSonarQubeEnv("${SONARQUBE}") {
-                    // Use triple quotes to avoid problems with multiline string and backslash
                     sh '''
                         mvn sonar:sonar -Dsonar.projectKey=com.example:Foyer \
                         -Dsonar.coverage.jacoco.xmlReportPaths=target/jacoco-report/jacoco.xml
@@ -39,9 +38,35 @@ pipeline {
     post {
         success {
             echo '✅ Build, Test, and SonarQube analysis succeeded'
+
+            // Send email on success
+            emailext (
+                subject: "Build Success: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
+                body: """
+                    <p>Hi Team,</p>
+                    <p>The build #${env.BUILD_NUMBER} for project <b>${env.JOB_NAME}</b> succeeded.</p>
+                    <p>SonarQube report is available at: <a href="${env.BUILD_URL}sonarqube/">SonarQube Dashboard</a></p>
+                    <p>Regards,<br/>Jenkins</p>
+                """,
+                mimeType: 'text/html',
+                to: 'yourteam@example.com' // <-- replace with your email(s)
+            )
         }
         failure {
             echo '❌ Build or analysis failed'
+
+            // Send email on failure
+            emailext (
+                subject: "Build FAILED: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
+                body: """
+                    <p>Hi Team,</p>
+                    <p>The build #${env.BUILD_NUMBER} for project <b>${env.JOB_NAME}</b> failed.</p>
+                    <p>Please check Jenkins logs and SonarQube for details.</p>
+                    <p>Regards,<br/>Jenkins</p>
+                """,
+                mimeType: 'text/html',
+                to: 'eya.chtourou1@gmail.com' // <-- replace with your email(s)
+            )
         }
     }
 }

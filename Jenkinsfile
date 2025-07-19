@@ -53,7 +53,7 @@ pipeline {
             )
         }
         failure {
-            echo '❌ Build or analysis failed'
+            echo '❌ Build or analysis fail'
 
             // Send email on failure
             emailext (

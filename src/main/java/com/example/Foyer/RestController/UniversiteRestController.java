@@ -1,4 +1,4 @@
-package com.example.Foyer.RestControllers;
+package com.example.Foyer.RestController;
 
 import com.example.Foyer.DAO.Entities.Universite;
 import com.example.Foyer.Services.Universite.IUniversiteService;
@@ -6,10 +6,10 @@ import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
 @RestController
 @RequestMapping("universite")
 @AllArgsConstructor
-
 public class UniversiteRestController {
     IUniversiteService service;
 
@@ -24,7 +24,7 @@ public class UniversiteRestController {
     }
 
     @GetMapping("findById")
-    Universite findById(@RequestParam long id) {
+    Universite findById(@RequestParam Long id) {
         return service.findById(id);
     }
 
@@ -34,14 +34,7 @@ public class UniversiteRestController {
     }
 
     @DeleteMapping("deleteById")
-    void deleteById(@RequestParam long id) {
+    void deleteById(@RequestParam Long id) {
         service.deleteById(id);
     }
-
-//    @PostMapping("ajouterUniversiteEtSonFoyer")
-//    Universite ajouterUniversiteEtSonFoyer(@RequestBody Universite u)
-//    {
-//        return service.ajouterUniversiteEtSonFoyer(u);
-//    }
-
 }

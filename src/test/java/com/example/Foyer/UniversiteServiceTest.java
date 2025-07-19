@@ -8,9 +8,11 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -28,58 +30,67 @@ class UniversiteServiceTest {
     }
 
     @Test
-    void addOrUpdate_ShouldSaveAndReturnUniversite() {
+    void testAddOrUpdate() {
         Universite u = new Universite();
         when(repo.save(u)).thenReturn(u);
+
         Universite result = universiteService.addOrUpdate(u);
+
+        assertNotNull(result);
         assertEquals(u, result);
-        verify(repo, times(1)).save(u);
+        verify(repo).save(u);
     }
 
     @Test
-    void findAll_ShouldReturnAllUniversites() {
-        List<Universite> universites = Arrays.asList(new Universite(), new Universite());
-        when(repo.findAll()).thenReturn(universites);
+    void testFindAll() {
+        List<Universite> mockList = Arrays.asList(new Universite(), new Universite());
+        when(repo.findAll()).thenReturn(mockList);
+
         List<Universite> result = universiteService.findAll();
-        assertEquals(universites, result);
-        verify(repo, times(1)).findAll();
+
+        assertEquals(2, result.size());
+        verify(repo).findAll();
     }
 
     @Test
-    void findById_ShouldReturnUniversiteWhenFound() {
+    void testFindById_WhenFound() {
         Universite u = new Universite();
-        when(repo.findById(1L)).thenReturn(Optional.of(u));
-        Universite result = universiteService.findById(1L);
+        when(repo.findById(Long.valueOf(1L))).thenReturn(Optional.of(u));
+
+        Universite result = universiteService.findById(Long.valueOf(1L));
+
+        assertNotNull(result);
         assertEquals(u, result);
-        verify(repo, times(1)).findById(1L);
+        verify(repo).findById(Long.valueOf(1L));
     }
 
     @Test
-    void findById_ShouldThrowExceptionWhenNotFound() {
-        when(repo.findById(1L)).thenReturn(Optional.empty());
-        assertThrows(RuntimeException.class, () -> universiteService.findById(1L));
-        verify(repo, times(1)).findById(1L);
+    void testFindById_WhenNotFound() {
+        when(repo.findById(Long.valueOf(2L))).thenReturn(Optional.empty());
+
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> {
+            universiteService.findById(Long.valueOf(2L));
+        });
+
+        assertEquals("universite id not found", exception.getMessage());
+        verify(repo).findById(Long.valueOf(2L));
     }
 
     @Test
-    void deleteById_ShouldCallDeleteByIdOnRepo() {
-        universiteService.deleteById(1L);
-        verify(repo, times(1)).deleteById(1L);
+    void testDeleteById() {
+        Long id = (Long) 1L;
+
+        universiteService.deleteById(id);
+
+        verify(repo).deleteById(id);
     }
 
     @Test
-    void delete_ShouldCallDeleteOnRepo() {
+    void testDelete() {
         Universite u = new Universite();
-        universiteService.delete(u);
-        verify(repo, times(1)).delete(u);
-    }
 
-//    @Test
-//    void ajouterUniversiteEtSonFoyer_ShouldSaveAndReturnUniversite() {
-//        Universite u = new Universite();
-//        when(repo.save(u)).thenReturn(u);
-//        Universite result = universiteService.ajouterUniversiteEtSonFoyer(u);
-//        assertEquals(u, result);
-//        verify(repo, times(1)).save(u);
-//    }
+        universiteService.delete(u);
+
+        verify(repo).delete(u);
+    }
 }

@@ -7,8 +7,7 @@ import java.util.List;
 public interface IUniversiteService {
     Universite addOrUpdate(Universite u);
     List<Universite> findAll();
-    Universite findById(long id);
-    void deleteById(long id);
+    Universite findById(Long id); // changed from long to Long
+    void deleteById(Long id);     // changed from long to Long
     void delete(Universite u);
-//    Universite ajouterUniversiteEtSonFoyer(Universite u);
 }
